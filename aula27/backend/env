@@ -1,5 +1,5 @@
-URI_DB=mongodb+srv://username:password@hwfuifhweuf
-DB_NAME=dogs
-JWT_SECRET=
+URI_DB=mongodb+srv://admin:pIgemCxNqp4KtJoj@cluster0.ipmtzes.mongodb.net/?retryWrites=true&w=majority
+DB_NAME=cluster0
+JWT_SECRET=041fa5c0431d88f9538144f26eb6cc17
 SENDGRID_API_KEY=
 SENDGRID_SENDER_MAIL=
