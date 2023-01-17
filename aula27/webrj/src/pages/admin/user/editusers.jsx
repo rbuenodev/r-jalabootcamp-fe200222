@@ -1,16 +1,35 @@
-import React, { useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { createUserThunk } from '../../../redux/reducers/userReducer'
+import React, { useEffect, useMemo, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom';
+import { getUserByIdThunk, updateUserThunk } from '../../../redux/reducers/userReducer'
 
-const CreateUsers = () => {
 
-    const dispatch = useDispatch()
+const EditUsers = () => {
+
+    const { id } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+    const users = useSelector((state) => state.users.users)
+    const user = useMemo(() => {
+        return users.filter((u) => u._id === id)[0];
+    }, [id])
 
     const name = useRef()
     const email = useRef()
     const type = useRef()
+
+    useEffect(() => {
+        dispatch(getUserByIdThunk(id));
+    }, [id]);
+
+    useEffect(() => {
+        if (user !== null || undefined) {
+            name.current.value = user.name;
+            email.current.value = user.email;
+            type.current.value = user.type;
+        }
+    }, [user]);
 
     const submit = (e) => {
         e.preventDefault()
@@ -18,22 +37,21 @@ const CreateUsers = () => {
         console.log('Email ', email.current.value)
         console.log('Type ', type.current.value)
 
-        dispatch(createUserThunk({
+        const updateUser = {
+            _id: id,
             name: name.current.value,
             email: email.current.value,
             type: type.current.value,
-            isVerified: false
-        }))
+        }
+        dispatch(updateUserThunk(updateUser))
         navigate("/admin/user/list");
     }
 
     return (
         <div className='ml-5 mt-5'>
-            <h1>Add new Person</h1>
+            <h1>Editing User</h1>
             <article>
-                Here you can create an user and set it's type.
-                The user will still need to validate it's
-                access through e-mail confirmation
+                Here you can update an user.
             </article>
             <div className='mt-5'>
                 <form className='flex flex-column' onSubmit={submit}>
@@ -45,11 +63,11 @@ const CreateUsers = () => {
                         <option value="seller">Seller</option>
                         <option value="buyer">Buyer</option>
                     </select>
-                    <button className='btn mt-5'>Create</button>
+                    <button className='btn mt-5'>Update</button>
                 </form>
             </div>
         </div>)
 }
 
 
-export default CreateUsers
+export default EditUsers

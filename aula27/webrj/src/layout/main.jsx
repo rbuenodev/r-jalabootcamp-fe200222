@@ -15,6 +15,7 @@ import VerifyEmail from '../pages/verified'
 import ListUsers from '../pages/admin/user/listUsers'
 import CreateUsers from '../pages/admin/user/createUsers'
 import Players from '../pages/player/player'
+import EditUsers from '../pages/admin/user/editusers'
 
 
 function Main() {
@@ -23,20 +24,21 @@ function Main() {
             <Sidebar>
                 <div className='ml-1 secondary-container'>
                     <Routes>
-                        <Route path='/' element={ <PrivateRoute authPath={ '/login' } outlet={ <Home /> }></PrivateRoute> } />
-                        <Route path='/add' element={ <AddDog /> } />
-                        <Route path='/list' element={ <ListDog /> } />
-                        <Route path='/players' element={ <Players /> } />
-                        <Route path='/news' element={ <News /> }>
-                            <Route path='special' element={ <h1>Special News here</h1> } />
+                        <Route path='/' element={<PrivateRoute authPath={'/login'} outlet={<Home />}></PrivateRoute>} />
+                        <Route path='/add' element={<AddDog />} />
+                        <Route path='/list' element={<ListDog />} />
+                        <Route path='/players' element={<Players />} />
+                        <Route path='/news' element={<News />}>
+                            <Route path='special' element={<h1>Special News here</h1>} />
                         </Route>
-                        <Route path="/login" element={ <Signin /> } />
-                        <Route path="/signup" element={ <SignUp /> } />
-                        <Route path="/verify" element={ <EmailVerification /> } />
-                        <Route path="/verify/:verificationCode" element={ <VerifyEmail /> } />
-                        <Route path="/admin/user/list" element={ <ListUsers /> } />
-                        <Route path="/admin/user/create" element={ <CreateUsers /> } />
-                        <Route path='*' element={ <h1>Page Not Found</h1> } />
+                        <Route path="/login" element={<Signin />} />
+                        <Route path="/signup" element={<SignUp />} />
+                        <Route path="/verify" element={<EmailVerification />} />
+                        <Route path="/verify/:verificationCode" element={<VerifyEmail />} />
+                        <Route path="/admin/user/list" element={<ListUsers />} />
+                        <Route path="/admin/user/create" element={<CreateUsers />} />
+                        <Route path="/admin/user/update/:id" element={<EditUsers />} />
+                        <Route path='*' element={<h1>Page Not Found</h1>} />
                     </Routes>
                 </div>
             </Sidebar>

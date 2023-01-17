@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { ObjectId } from 'bson';
 import { getDbConnection } from '../db.js';
 
 export const getAllUsers = {
@@ -11,3 +12,64 @@ export const getAllUsers = {
     });
   },
 };
+
+export const getUser = {
+  path: '/api/users/:id',
+  method: 'get',
+  handler: async (req, res) => {
+    const id = req.params.id;
+    const db = getDbConnection(process.env.DB_NAME);
+    const result = await db.collection('users').findOne(new ObjectId(id));
+    res.status(200).json(result);
+  },
+};
+
+
+export const addNewUser = {
+  path: '/api/users',
+  method: 'post',
+  handler: async (req, res) => {
+    const {
+      name, email, type, isVerified,
+    } = req.body;
+    const db = getDbConnection(process.env.DB_NAME);
+    const result = await db.collection('users').insertOne({
+      name,
+      email,
+      type,
+      isVerified
+    });
+    res.status(200).json(result);
+  },
+};
+
+export const updateUser = {
+  path: '/api/users/:id',
+  method: 'put',
+  handler: async (req, res) => {
+    const id = req.params.id;
+    const { name, email, type } = req.body;
+    const user = { name, email, type };
+    console.log(user);
+    console.log(id);
+    const db = getDbConnection(process.env.DB_NAME);
+    const result = await db.collection('users').updateOne({ _id: new ObjectId(id) }, { $set: user });
+    res.status(200).json(result);
+  }
+}
+
+export const deleteUser = {
+  path: '/api/users/:id',
+  method: 'delete',
+  handler: async (req, res) => {
+    const id = req.params.id;
+    const db = getDbConnection(process.env.DB_NAME);
+    await db.collection("users").deleteOne({ _id: new ObjectId(id) }, function (err, obj) {
+      if (err) throw err;
+      console.log("1 document deleted");
+    });
+
+    res.status(200);
+  }
+
+}

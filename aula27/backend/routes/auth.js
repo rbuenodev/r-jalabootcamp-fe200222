@@ -15,9 +15,8 @@ export const signup = {
 
     if (user) { res.sendStatus(409); }
     const passwordHash = await bcrcrypt.hash(password, 10);
-
     const verificationString = uuidv4();
-
+    
     const result = await db.collection('users').insertOne({
       name,
       email,
